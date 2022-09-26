@@ -3,6 +3,10 @@ I'm using MongoDB to fulfill the mockDB suggestion.  Drawbacks to using MongoDB 
 https://www.mongodb.com/cloud/atlas/register
 
 
+## Requirements
+Mongodb is set up with database `bored` and user `glia`
+
+
 ## How to run
 
 ```
