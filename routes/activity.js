@@ -44,8 +44,8 @@ router.get('/', async function(req, res, next) {
 
 // TODO backoff on api busy
 async function getActivityFromBored() {
-  // TODO check response status, etc
   const response = await fetch('http://www.boredapi.com/api/activity/')
+  if (!response.ok) { return null }
   const json = await response.json()
 
   const activity = {
