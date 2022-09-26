@@ -28,3 +28,9 @@ per requirements, an example body for the POST /user endpoint
 	"price": "Free"
 }
 ```
+
+
+## Further discussion
+
+So far I'm able to do implemenation without needing any extra npm packages, aside from the mongodb npm package to access mongodb.
+While I'm not limiting myself from using useful libraries, the code right now happens to be a good demonstration of how it could be written without many dependencies.
