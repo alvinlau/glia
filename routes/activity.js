@@ -11,23 +11,33 @@ router.get('/', async function(req, res, next) {
   const activities = mongo.db('bored').collection('activities')
   let activity = null
 
-  // should allow request with no user?
+  // should we allow request with no user?
   if (!user) {
     activity = await activities.findOne() || await getActivityFromBored()
-    activity._id || await activities.insertOne(activity)
+    activity._id || await activities.insertOne(activity) // if it has _id then it's from mongo
     res.send(activity)
+    await mongo.close()
     return
   }
 
   // apply user filter
+  // lookup cache
+  activity = await activities.findOne({accessibility: user.accessibility, price: user.price})
+  if (activity) {
+    res.send(activity)
+    await mongo.close()
+    return
+  }
+  
+  // no match in cache, call bored API
   let activitiesReceived = []
-  while(!(activity && userPreferred(user, activity))) {
+  while (!(activity && userPreferred(user, activity))) {
     activity = await getActivityFromBored()
     activitiesReceived.push(activity)
     // console.log(activity)
   }
+  await activities.insertMany(activitiesReceived) // save all unqualifying activies in cache
 
-  await activities.insertMany(activitiesReceived)
   await mongo.close()
   res.send(activity)
 });
@@ -38,7 +48,6 @@ async function getActivityFromBored() {
   // TODO check response
   const response = await fetch('http://www.boredapi.com/api/activity/')
   const json = await response.json()
-  // console.log(json)
 
   var activity = {
     ...(json),
