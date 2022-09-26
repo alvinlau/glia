@@ -33,7 +33,6 @@ router.get('/', async function(req, res, next) {
   while (!(activity && userPreferred(user, activity))) {
     activity = await getActivityFromBored()
     activitiesReceived.push(activity)
-    // console.log(activity)
   }
   await activities.insertMany(activitiesReceived) // save all unqualifying activies in cache
 
