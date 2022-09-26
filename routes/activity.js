@@ -1,37 +1,58 @@
 var express = require('express');
 var router = express.Router();
 
-const { MongoClient } = require('mongodb');
+const { MongoClient } = require('mongodb')
+const MONGO_URL = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@cluster0.rzwjswe.mongodb.net'
 
-// TODO docs
 router.get('/', async function(req, res, next) {
-  // TODO check response
-  const response = await fetch('http://www.boredapi.com/api/activity/')
-  const json = await response.json()
-  console.log(json)
+  const mongo = new MongoClient(MONGO_URL)
+  const users = mongo.db('bored').collection('users')
+  const user = await users.findOne()
+  const activities = mongo.db('bored').collection('activities')
+  let activity = null
 
-  var activity = {...(json), 
-    accessibility: accessibility(json.accessibility),
-    price: price(json.price)
+  // should allow request with no user?
+  if (!user) {
+    activity = await activities.findOne() || await getActivityFromBored()
+    activity._id || await activities.insertOne(activity)
+    res.send(activity)
+    return
   }
 
+  // apply user filter
+  let activitiesReceived = []
+  while(!(activity && userPreferred(user, activity))) {
+    activity = await getActivityFromBored()
+    activitiesReceived.push(activity)
+    // console.log(activity)
+  }
+
+  await activities.insertMany(activitiesReceived)
+  await mongo.close()
   res.send(activity)
 });
 
 
-router.post('/', async function (req, res, next) {
-  // TODO sanitize fields
-  console.log(req.body)
-  const json = req.body
+// TODO backoff on api busy
+async function getActivityFromBored() {
+  // TODO check response
+  const response = await fetch('http://www.boredapi.com/api/activity/')
+  const json = await response.json()
+  // console.log(json)
 
-  const url = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@cluster0.rzwjswe.mongodb.net'
-  const client = new MongoClient(url)
-  const users = client.db('bored').collection('users');
-  await users.insertOne(json)
-  await client.close()
+  var activity = {
+    ...(json),
+    accessibility: accessibility(json.accessibility),
+    price: price(json.price)
+  }
 
-  res.send(json)
-});
+  return activity
+}
+
+
+function userPreferred(user, activity) {
+  return activity.accessibility == user.accessibility && activity.price == user.price
+}
 
 
 
