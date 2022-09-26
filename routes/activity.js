@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+const { MongoClient } = require('mongodb');
+
+// TODO docs
 router.get('/', async function(req, res, next) {
   // TODO check response
   const response = await fetch('http://www.boredapi.com/api/activity/')
@@ -15,6 +17,22 @@ router.get('/', async function(req, res, next) {
 
   res.send(activity)
 });
+
+
+router.post('/', async function (req, res, next) {
+  // TODO sanitize fields
+  console.log(req.body)
+  const json = req.body
+
+  const url = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@cluster0.rzwjswe.mongodb.net'
+  const client = new MongoClient(url)
+  const users = client.db('bored').collection('users');
+  await users.insertOne(json)
+  await client.close()
+
+  res.send(json)
+});
+
 
 
 // TODO schema checks
