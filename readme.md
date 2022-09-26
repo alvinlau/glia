@@ -7,8 +7,9 @@ https://www.mongodb.com/cloud/atlas/register
 
 ```
 npm install
-MONGO_PASSWD=<mongodb password here> npm start
+MONGO_PASSWD=<password> MONGO_HOST=<host> npm start
 ```
+When `MONGO_PASSWD` is the mongodb password and `MONGO_HOST` is the hostname, e.g. `cluster0.rzwjswe.mongodb.net`
 
 Then you can hit the endpoints in localhost via:
 

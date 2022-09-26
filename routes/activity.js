@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { MongoClient } = require('mongodb')
-const MONGO_URL = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@cluster0.rzwjswe.mongodb.net'
+const MONGO_URL = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@' + process.env.MONGO_HOST
 
 router.get('/', async function(req, res, next) {
   const mongo = new MongoClient(MONGO_URL)
