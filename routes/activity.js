@@ -15,17 +15,16 @@ router.get('/', async function(req, res, next) {
   if (!user) {
     activity = await activities.findOne() || await getActivityFromBored()
     activity._id || await activities.insertOne(activity) // if it has _id then it's from mongo
-    res.send(activity)
     await mongo.close()
+    res.send(activity)
     return
   }
 
-  // apply user filter
-  // lookup cache
+  // apply user filter, first by looking up cache
   activity = await activities.findOne({accessibility: user.accessibility, price: user.price})
   if (activity) {
-    res.send(activity)
     await mongo.close()
+    res.send(activity)
     return
   }
   
@@ -45,12 +44,16 @@ router.get('/', async function(req, res, next) {
 
 // TODO backoff on api busy
 async function getActivityFromBored() {
-  // TODO check response
+  // TODO check response status, etc
   const response = await fetch('http://www.boredapi.com/api/activity/')
   const json = await response.json()
 
-  var activity = {
-    ...(json),
+  const activity = {
+    activity: json.activity,
+    type: json.type,
+    participants: json.participants,
+    link: json.link,
+    key: json.key,
     accessibility: accessibility(json.accessibility),
     price: price(json.price)
   }
@@ -64,8 +67,6 @@ function userPreferred(user, activity) {
 }
 
 
-
-// TODO schema checks
 function accessibility(source) {
   switch (true) {
     case source > 0.75:
@@ -74,7 +75,7 @@ function accessibility(source) {
       return 'Medium'
     default:
       return 'High'
-      // exception of the value is < 0?
+      // TODO exception if the value is < 0?
   }
 }
 
