@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <div v-if="this.$cookies.get('boredUser')">
       <h5>Logged in as: {{this.$cookies.get('boredUser')}}</h5>
       <p>Preferences</p>

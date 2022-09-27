@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <div v-if="activity.activity">
       <h3>Activity</h3>
       <h4>{{activity.activity}}</h4>
@@ -34,7 +34,7 @@ export default {
         headers: {
           'BoredUser': this.$cookies.get('boredUser')
         }})
-      .then(response => response.status >= 400 ? null : response.json())
+      .then(response => response.status >= 400 ? {} : response.json())
       .then(data => this.activity = data)
       .catch(error => console.log(error))
     }
