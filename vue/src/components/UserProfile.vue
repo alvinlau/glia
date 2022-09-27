@@ -57,6 +57,9 @@ export default {
         this.$cookies.set('boredUser', data.name)
         this.$cookies.set('boredUserAccessibility', data.accessibility)
         this.$cookies.set('boredUserPrice', data.price)
+        this.userForm.name = ''
+        this.userForm.accessibility = ''
+        this.userForm.price = ''
         this.$forceUpdate();
       })
     }
