@@ -36,7 +36,10 @@ export default {
         }})
       .then(response => response.status >= 400 ? {} : response.json())
       .then(data => this.activity = data)
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error)
+        this.activity = {}
+      })
     }
   },
   mounted() {
