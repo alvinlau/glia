@@ -1,3 +1,13 @@
+## Overall Design
+I'm leveraging cookies on the client to store the current logged in user as well as their preferences.  The cookies are `boredUser`, `boredUserAccessibility`, `boredUserPrice`.  Only the `boredUser` cookie value is sent to the `/activity` endpint as a header, where as `boredUserAccessibility` are `boredUserPrice` used for display in the client UI.  API response errors are handled gracefully on the client as well.
+
+Since the `/activity` endpoint only returns an activity that fits the user's preferences, first it looks up in database for an activity that fits, and then if not, keeps calling Bored API until a qualifying activity is received and shown.
+
+Consequently, all the activities received from Bored API are saved in database, whether they qualify the current request from the user or not.  This is to help future requests to avoid calling Bored API if we can find a matching activity in our database.
+
+The `/activity` endpoint still work if there are no active logged in users, that fulfills the requirement where a random activity is still shown if no user is logged in.
+
+
 ## Requirements
 Mongodb is set up with database `bored` and user `glia`
 
@@ -35,8 +45,6 @@ You can also hit the endpoints in localhost via:
 
 ```
 GET http://localhost:3000/activity
-
-
 POST http://localhost:3000/user
 ```
 
@@ -55,4 +63,4 @@ per requirements, an example body for the POST /user endpoint
 
 I'm using MongoDB to fulfill the mockDB suggestion.  Drawbacks to using MongoDB can definitely be discussed, here we're using it as our initial data storage to start.
 
-So far for dependencies I'm only using mongodb, cors (for express), cross-fetch (for node). While I'm not limiting myself from using useful libraries, the implementation right now happens to be a good demonstration of how it could be written without many dependencies.
+So far for dependencies I'm only using `mongodb`, `cors` (for express), `cross-fetch` (for node). While I'm not limiting myself from using useful libraries, the implementation right now happens to be a good demonstration of how it could be written without many dependencies.

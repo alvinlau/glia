@@ -11,6 +11,7 @@
     <hr/>
 
     <section>
+    <div v-if="flash" v-text="flash"></div>
     <form @submit.prevent="setUser">
       <div>
         <label for="name">Name:</label>
@@ -43,6 +44,7 @@ export default {
         accessibility: '',
         price: ''
       },
+      flash: '',
     }
   },
   methods: {
@@ -54,9 +56,15 @@ export default {
         },
         body: JSON.stringify(this.userForm)
       })
-      .then(response => response.status >= 400 ? null : response.json())
+      .then(async response => {
+        return response.status >= 400 ? {error: await response.text()} : response.json()
+      })
       .then(data => {
-        if (!data) {return}
+        if (data.error) {
+          console.log(data.error)
+          this.flash = 'Problem creating user: ' + data.error
+          return
+        }
         console.log(data)
 
         this.$cookies.set('boredUser', data.name)
@@ -67,7 +75,10 @@ export default {
         this.userForm.price = ''
         this.$forceUpdate()
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error)
+        this.flash = 'Unable to create user, network issue'
+      })
     },
   }
 }
