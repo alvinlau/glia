@@ -18,7 +18,8 @@ router.get('/', async function(req, res, next) {
 
   // no user supplied, just get any activity
   if (!user) {
-    activity = await activities.findOne() || await getActivityFromBored()
+    activity = await activities.aggregate([{$sample: {size: 1}}]).next()
+      || await getActivityFromBored()
     activity._id || await activities.insertOne(activity) // if it has _id then it's from mongo
     await mongo.close()
     res.send(activity)
@@ -26,7 +27,12 @@ router.get('/', async function(req, res, next) {
   }
 
   // apply user filter, first by looking up cache
-  activity = await activities.findOne({accessibility: user.accessibility, price: user.price})
+  activity = await activities.aggregate([
+    { $match: {accessibility: user.accessibility, price: user.price} },
+    { $sample: {size: 1} },
+  ]).next()
+  console.log(activity)
+
   if (activity) {
     console.log('found activitiy in cache')
     await mongo.close()
@@ -42,6 +48,7 @@ router.get('/', async function(req, res, next) {
   }
   await activities.insertMany(activitiesReceived) // save all unqualifying activies in cache
 
+  console.log(activity)
   await mongo.close()
   res.send(activity)
 });

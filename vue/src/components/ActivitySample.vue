@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    <!-- <h1>{{ msg }}</h1> -->
     <h3>Activity</h3>
     <ul>
       <li>{{activity.activity}}</li>

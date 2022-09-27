@@ -1,10 +1,11 @@
 <template>
   <div class="hello">
-    <!-- <h1>{{ msg }}</h1> -->
-    <p>Logged in as: {{this.$cookies.get('boredUser')}}</p>
-    <p>Preferences</p>
-    <p>Accessibility: {{this.$cookies.get('boredUserAccessibility')}}</p>
-    <p>Price: {{this.$cookies.get('boredUserPrice')}}</p>
+    <div v-if="this.$cookies.get('boredUser')">
+      <p>Logged in as: {{this.$cookies.get('boredUser')}}</p>
+      <p>Preferences</p>
+      <p>Accessibility: {{this.$cookies.get('boredUserAccessibility')}}</p>
+      <p>Price: {{this.$cookies.get('boredUserPrice')}}</p>
+    </div>
 
     <section>
     <form @submit.prevent="setUser">
