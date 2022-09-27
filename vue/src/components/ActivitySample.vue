@@ -1,15 +1,18 @@
 <template>
   <div class="hello">
-    <h3>Activity</h3>
-    <ul>
-      <li>{{activity.activity}}</li>
-      <li>Type: {{activity.type}}</li>
-      <li>Participants: {{activity.participants}}</li>
-      <li>Accessibility: {{activity.accessibility}}</li>
-      <li>Price: {{activity.price}}</li>
-      <li>Link: {{activity.link}}</li>
-      <li>Key: {{activity.key}}</li>
-    </ul>
+    <div v-if="activity.activity">
+      <h3>Activity</h3>
+      <h4>{{activity.activity}}</h4>
+      <ul>
+        <li>Type: {{activity.type}}</li>
+        <li>Participants: {{activity.participants}}</li>
+        <li>Accessibility: {{activity.accessibility}}</li>
+        <li>Price: {{activity.price}}</li>
+        <li>Link: {{activity.link}}</li>
+        <li>Key: {{activity.key}}</li>
+      </ul>
+    </div>
+    <p v-else>Waiting for activity...</p>
     <button @click="getActivity">Get another activity</button>
   </div>
 </template>
@@ -31,8 +34,9 @@ export default {
         headers: {
           'BoredUser': this.$cookies.get('boredUser')
         }})
-      .then((response) => response.json())
-      .then((data) => this.activity = data)
+      .then(response => response.status >= 400 ? null : response.json())
+      .then(data => this.activity = data)
+      .catch(error => console.log(error))
     }
   },
   mounted() {

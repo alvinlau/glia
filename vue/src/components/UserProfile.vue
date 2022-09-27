@@ -1,11 +1,14 @@
 <template>
   <div class="hello">
     <div v-if="this.$cookies.get('boredUser')">
-      <p>Logged in as: {{this.$cookies.get('boredUser')}}</p>
+      <h5>Logged in as: {{this.$cookies.get('boredUser')}}</h5>
       <p>Preferences</p>
-      <p>Accessibility: {{this.$cookies.get('boredUserAccessibility')}}</p>
-      <p>Price: {{this.$cookies.get('boredUserPrice')}}</p>
+      <ul>
+        <li>Accessibility: {{this.$cookies.get('boredUserAccessibility')}}</li>
+        <li>Price: {{this.$cookies.get('boredUserPrice')}}</li>
+      </ul>
     </div>
+    <hr/>
 
     <section>
     <form @submit.prevent="setUser">
@@ -51,18 +54,21 @@ export default {
         },
         body: JSON.stringify(this.userForm)
       })
-      .then(response => response.json())
+      .then(response => response.status >= 400 ? null : response.json())
       .then(data => {
+        if (!data) {return}
         console.log(data)
+
         this.$cookies.set('boredUser', data.name)
         this.$cookies.set('boredUserAccessibility', data.accessibility)
         this.$cookies.set('boredUserPrice', data.price)
         this.userForm.name = ''
         this.userForm.accessibility = ''
         this.userForm.price = ''
-        this.$forceUpdate();
+        this.$forceUpdate()
       })
-    }
+      .catch(error => console.log(error))
+    },
   }
 }
 </script>
