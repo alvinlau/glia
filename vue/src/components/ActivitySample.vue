@@ -11,7 +11,7 @@
       <li>Link: {{activity.link}}</li>
       <li>Key: {{activity.key}}</li>
     </ul>
-    <button @click="getActivity">Get Activity</button>
+    <button @click="getActivity">Get another activity</button>
   </div>
 </template>
 

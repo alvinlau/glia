@@ -8,7 +8,7 @@ const MONGO_URL = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@' + proce
 router.post('/', async function (req, res, next) {
   const {name, accessibility, price} = req.body
   if ([name, accessibility, price].some(val => !val)) {
-    next('name, accessibility, price fields must be valid values')
+    res.status(400).send('name, accessibility, price fields must be valid values')
     return
   }
 

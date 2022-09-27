@@ -4,16 +4,16 @@
     <section>
     <form @submit.prevent="setUser">
       <div>
-        <label for="userId">Name:</label>
-        <input type="text" id="name" v-model="user.name">
+        <label for="name">Name:</label>
+        <input type="text" id="name" v-model="userData.name">
       </div>
       <div>
-        <label for="title">Accessibility: </label>
-        <input type="text" id="accessibility" v-model="user.accessibility">
+        <label for="accessibility">Accessibility: </label>
+        <input type="text" id="accessibility" v-model="userData.accessibility">
       </div>
       <div>
-        <label for="body">Price: </label>
-        <input type="text" id="price" v-model="user.price">
+        <label for="price">Price: </label>
+        <input type="text" id="price" v-model="userData.price">
       </div>
       <button>Create New User</button>
     </form>
@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      user: {
+      userData: {
         name: '',
         accessibility: '',
         price: ''
@@ -43,11 +43,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name:           this.name,
-          accessibility:  this.accessibility,
-          price:          this.price
-        })
+        body: JSON.stringify(this.userData)
       })
       .then(response => response.json())
       .then(data => console.log(data))
