@@ -28,7 +28,10 @@ export default {
   },
   methods: {
     getActivity() {
-      fetch('http://localhost:3000/activity')
+      fetch('http://localhost:3000/activity', {
+        headers: {
+          'BoredUser': this.$cookies.get('boredUser')
+        }})
       .then((response) => response.json())
       .then((data) => this.activity = data)
     }

@@ -1,18 +1,22 @@
 var express = require('express');
 var router = express.Router();
-
+const fetch = require('cross-fetch');
 const { MongoClient } = require('mongodb')
 const MONGO_URL = 'mongodb+srv://glia:' + process.env.MONGO_PASSWD + '@' + process.env.MONGO_HOST
 
-
 router.get('/', async function(req, res, next) {
   const mongo = new MongoClient(MONGO_URL)
+  
   const users = mongo.db('bored').collection('users')
-  const user = await users.findOne()
+  const loggedInUser = req.header('boredUser')
+  console.log('logged in user from request: ' + loggedInUser)
+  const user = await users.findOne({name: loggedInUser}) || await users.findOne()
+  console.log('current user: ' + user.name)
+
   const activities = mongo.db('bored').collection('activities')
   let activity = null
 
-  // should we allow request with no user?
+  // no user supplied, just get any activity
   if (!user) {
     activity = await activities.findOne() || await getActivityFromBored()
     activity._id || await activities.insertOne(activity) // if it has _id then it's from mongo
@@ -24,6 +28,7 @@ router.get('/', async function(req, res, next) {
   // apply user filter, first by looking up cache
   activity = await activities.findOne({accessibility: user.accessibility, price: user.price})
   if (activity) {
+    console.log('found activitiy in cache')
     await mongo.close()
     res.send(activity)
     return
