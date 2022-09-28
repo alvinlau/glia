@@ -24,6 +24,9 @@ class ActivityService {
     if (activity) {
       console.log(`found activity in cache for user ${user.name}`)
       console.log(activity)
+      // grab another activity from bored API to grow our cache
+      activity = await getActivityFromBored()
+      await this.activities.insertOne(activity)
       return activity
     }
 
