@@ -7,8 +7,8 @@
         <li>Accessibility: {{this.$cookies.get('boredUserAccessibility')}}</li>
         <li>Price: {{this.$cookies.get('boredUserPrice')}}</li>
       </ul>
+      <hr/>
     </div>
-    <hr/>
 
     <section>
     <div v-if="flash" v-text="flash"></div>

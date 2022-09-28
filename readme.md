@@ -66,3 +66,6 @@ I'm using MongoDB to fulfill the mockDB suggestion.  Drawbacks to using MongoDB 
 So far for dependencies I'm only using `mongodb`, `cors` (for express), `cross-fetch` (for node). While I'm not limiting myself from using useful libraries, the implementation right now happens to be a good demonstration of how it could be written without many dependencies.
 
 I did use the node `fetch` API that is built in node above 17.5, but then decided include `cross-fetch` so the same fetch API is usable in prior versions of node. Just wanted to get used to the future standard now that it's decided.
+
+
+Going through the Bored API results, I realized there's no returned activity that is low accessibility and high price...
