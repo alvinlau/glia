@@ -69,3 +69,20 @@ I did use the node `fetch` API that is built in node above 17.5, but then decide
 
 
 Going through the Bored API results, I realized there's no returned activity that is low accessibility and high price...
+
+
+## References
+
+https://vuejs.org/guide/quick-start.html#creating-a-vue-application
+
+https://www.koderhq.com/tutorial/vue/http-fetch/
+
+https://github.com/cmp-cc/vue-cookies/blob/master/sample/welcome-v3.html
+
+https://expressjs.com/en/resources/middleware/cors.html
+
+https://www.mongodb.com/docs/manual/reference/operator/aggregation/sample/
+
+https://michaelnthiessen.com/force-re-render/
+
+https://www.codementor.io/@evanbechtol/node-service-oriented-architecture-12vjt9zs9i

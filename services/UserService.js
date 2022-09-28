@@ -5,11 +5,11 @@ class UserService {
   }
 
   async getUser(username) {
-    return await this.users.findOne({ name: username })
+    return username ? await this.users.findOne({ name: username }) : null
   }
 
   async addUser(user) {
-    await this.users.insertOne(user)
+    return user && await this.users.insertOne(user)
   }
 }
 
