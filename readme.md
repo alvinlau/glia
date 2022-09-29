@@ -59,6 +59,11 @@ per requirements, an example body for the POST /user endpoint
 ```
 
 
+## Running the tests
+
+Simple call `jest` in the root folder or the `tests` folder
+
+
 ## Further discussion
 
 I'm using MongoDB to fulfill the mockDB suggestion.  Drawbacks to using MongoDB can definitely be discussed, here we're using it as our initial data storage to start.
