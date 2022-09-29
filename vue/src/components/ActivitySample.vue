@@ -35,7 +35,10 @@ export default {
           'BoredUser': this.$cookies.get('boredUser')
         }})
       .then(response => response.status >= 400 ? {} : response.json())
-      .then(data => this.activity = data)
+      .then(data => {
+        this.activity = data
+        this.$cookies.set('boredActivityKey', data.key)
+      })
       .catch(error => {
         console.log(error)
         this.activity = {}

@@ -26,8 +26,11 @@ class ActivityService {
       console.log(`found activity in cache for user ${user.name}`)
       console.log(activity)
       // grab another activity from bored API to grow our cache
-      await this.activities.insertOne(await this.getActivityFromBored())
-      return activity
+      const newActivity = await this.getActivityFromBored()
+      await this.activities.insertOne(newActivity)
+      // only show activity if it's different from the one the user is looking at
+      // otherwise still go through getting a new activity from bored API below
+      if (user.activityKey != activity.key) { return activity }
     }
 
     // no match in cache, call bored API

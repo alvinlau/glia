@@ -25,6 +25,7 @@ router.get('/', async function(req, res, next) {
   }
 
   // get activity based on user preferences
+  user.activityKey = req.header('boredActivityKey')
   activity = await activityService.getActivityWithUser(user)
   res.send(activity)
 });
