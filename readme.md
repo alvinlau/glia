@@ -1,11 +1,11 @@
 ## Overall Design
-I'm leveraging cookies on the client to store the current logged in user as well as their preferences.  The cookies are `boredUser`, `boredUserAccessibility`, `boredUserPrice`.  Only the `boredUser` cookie value is sent to the `/activity` endpint as a header, where as `boredUserAccessibility` are `boredUserPrice` used for display in the client UI.  API response errors are handled gracefully on the client as well.
-
 Since the `/activity` endpoint only returns an activity that fits the user's preferences, first it looks up in database for an activity that fits, and then if not, keeps calling Bored API until a qualifying activity is received and shown.
 
 Consequently, all the activities received from Bored API are saved in database, whether they qualify the current request from the user or not.  This is to help future requests to avoid calling Bored API if we can find a matching activity in our database.
 
 The `/activity` endpoint still work if there are no active logged in users, that fulfills the requirement where a random activity is still shown if no user is logged in.
+
+I'm leveraging cookies on the client to store the current logged in user as well as their preferences.  The cookies are `boredUser`, `boredUserAccessibility`, `boredUserPrice`.  Only the `boredUser` cookie value is sent to the `/activity` endpint as a header, where as `boredUserAccessibility` are `boredUserPrice` used for display in the client UI.  API response errors are handled gracefully on the client as well.
 
 
 ## Requirements
