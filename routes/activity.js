@@ -10,7 +10,7 @@ const userService = new (require('../services/UserService'))(mongo)
 
 router.get('/', async function(req, res, next) {
   // determine user
-  const loggedInUser = req.header('boredUser')
+  const loggedInUser = req.header('BoredUser')
   console.log('logged in user from request: ' + loggedInUser)
 
   const user = await userService.getUser(loggedInUser)
@@ -25,7 +25,7 @@ router.get('/', async function(req, res, next) {
   }
 
   // get activity based on user preferences
-  user.activityKey = req.header('boredActivityKey')
+  user.activityKey = req.header('BoredActivityKey')
   activity = await activityService.getActivityWithUser(user)
   res.send(activity)
 });

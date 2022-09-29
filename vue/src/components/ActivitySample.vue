@@ -32,7 +32,8 @@ export default {
     getActivity() {
       fetch('http://localhost:3000/activity', {
         headers: {
-          'BoredUser': this.$cookies.get('boredUser')
+          'BoredUser': this.$cookies.get('boredUser'),
+          'BoredActivityKey': this.$cookies.get('boredActivityKey')
         }})
       .then(response => response.status >= 400 ? {} : response.json())
       .then(data => {

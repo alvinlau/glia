@@ -30,7 +30,9 @@ class ActivityService {
       await this.activities.insertOne(newActivity)
       // only show activity if it's different from the one the user is looking at
       // otherwise still go through getting a new activity from bored API below
+      console.log(user.activityKey + '  ' + activity.key)
       if (user.activityKey != activity.key) { return activity }
+      activity = newActivity
     }
 
     // no match in cache, call bored API
@@ -42,7 +44,8 @@ class ActivityService {
     }
     console.log(`got activity from BoredAPI for user ${user.name}`)
     console.log(activity)
-    await this.activities.insertMany(activitiesReceived) // save all unqualifying activies in cache
+    // save all unqualifying activies in cache
+    if (activitiesReceived.length) {await this.activities.insertMany(activitiesReceived)}
     return activity
   }
 
