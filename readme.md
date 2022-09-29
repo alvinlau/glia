@@ -61,7 +61,17 @@ per requirements, an example body for the POST /user endpoint
 
 ## Running the tests
 
-Simple call `jest` in the root folder or the `tests` folder
+Assuming `jest` npm package is installed for cli
+
+```
+npm install jest --global
+```  
+
+Simply call `jest` in the root folder or the `tests` folder
+
+```
+jest
+```
 
 
 ## Further discussion
