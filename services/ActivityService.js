@@ -32,7 +32,7 @@ class ActivityService {
 
     // no match in cache, call bored API
     let activitiesReceived = []
-    while (!(activity && userPreferred(user, activity))) {
+    while (!(activity && this.userPreferred(user, activity))) {
       activity = await this.getActivityFromBored()
       console.log(`activity ${activity.activity}`)
       activitiesReceived.push(activity)
